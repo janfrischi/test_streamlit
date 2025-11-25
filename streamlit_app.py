@@ -1,28 +1,32 @@
 import streamlit as st
+import pandas as pd
+import numpy as np
 
-st.set_page_config(page_title="My Streamlit App", page_icon="🚀")
+st.set_page_config(page_title="My First Streamlit App", page_icon="🚀")
 
-st.title("🚀 Welcome to My Streamlit App")
+st.title("Hello, Streamlit! 👋")
+st.write(
+    """
+    This is a **basic Streamlit app**.
 
-st.write("This is a basic Streamlit application!")
-
-# Add some interactive widgets
-name = st.text_input("What's your name?")
-if name:
-    st.write(f"Hello, {name}! 👋")
-
-# Add a slider
-age = st.slider("Select your age", 0, 100, 25)
-st.write(f"You are {age} years old")
-
-# Add a selectbox
-favorite_color = st.selectbox(
-    "What's your favorite color?",
-    ["Red", "Blue", "Green", "Yellow", "Purple"]
+    Use the sidebar to change the configuration and see how the app updates.
+    """
 )
-st.write(f"Your favorite color is {favorite_color}")
 
-# Add a button
-if st.button("Click me!"):
-    st.balloons()
-    st.success("Thanks for clicking! 🎉")
+# Sidebar controls
+st.sidebar.header("Controls")
+num_points = st.sidebar.slider("Number of random data points", min_value=10, max_value=500, value=100)
+show_table = st.sidebar.checkbox("Show raw data table", value=True)
+
+# Generate some random data
+data = pd.DataFrame(
+    np.random.randn(num_points, 2),
+    columns=["x", "y"]
+)
+
+st.subheader("Random data scatter plot")
+st.scatter_chart(data)
+
+if show_table:
+    st.subheader("Raw data")
+    st.dataframe(data)
